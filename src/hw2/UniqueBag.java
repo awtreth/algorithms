@@ -35,16 +35,28 @@ package hw2;
 public class UniqueBag<Item extends Comparable<Item>> {
 
 	Node first = null;
+	int N = 0;
 	
 	/** You must use this Node class as part of a LinkedList to store the UniqueBag items. */
 	class Node {
 		private Item   item;
 		private Node   next;
+		
+		Node() {
+			this.item = null;
+			this.next = null;
+		}
+		
+		Node(Item item, Node next) {
+			this.item = item;
+			this.next = next;
+		}
 	}
 
 	/** Default constructor to create an empty initial bag. */
 	public UniqueBag() {
-		
+		this.first = new Node();
+		this.N = 0;
 	}
 	
 	/**
@@ -53,6 +65,7 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * Performance must be dependent of the number of items in initial, or ~ N.
 	 */
 	public UniqueBag(Item[] initial) {
+		//the bag is initially empty
 		
 	}
 	
@@ -62,8 +75,7 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * Performance must be independent of the number of items in the UniqueBag, or ~ 1.
 	 */
 	public int size() {
-		// Replace with your implementation
-		return -999;
+		return this.N;
 	}
 
 	/** 
@@ -92,8 +104,14 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * Performance can be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
 	public boolean add (Item it){
-		// Replace with your implementation
-		return false;
+		if(this.contains(it))
+			return false;
+		else
+		{
+			Node oldfirst = this.first;
+			this.first = new Node(it, oldfirst);
+			return true;
+		}
 	}
 	
 	/** 
@@ -112,10 +130,18 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * Performance must be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
 	public boolean contains(Item it) {
-		// Replace with your implementation
+		Node node = first;
+		
+		for(int i = 0; i < this.N; i++)
+		{
+			if(node.item.equals(it))
+				return true;
+			else
+				node = node.next;
+		}
+		
 		return false;
 	}
-
 	/** 
 	 * Return a UniqueBag which represents intersection with existing UniqueBag.
 	 * 
