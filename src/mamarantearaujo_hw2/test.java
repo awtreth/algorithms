@@ -15,7 +15,6 @@ public class test {
 	
 	public static void main(String[] args) {
 		String[] strs = new String[]{"ab", "ba"};
-		
 		System.out.println(strs[0].compareTo(strs[1])<0);
 	}
 
