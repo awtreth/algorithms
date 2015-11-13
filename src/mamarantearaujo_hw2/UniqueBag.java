@@ -1,4 +1,4 @@
-package hw2;
+package mamarantearaujo_hw2;
 
 /**
  * This data type offers Bag-like behavior with the added constraint that all elements
@@ -36,17 +36,17 @@ public class UniqueBag<Item extends Comparable<Item>> {
 
 	Node first = null;
 	int N = 0;
-	
+
 	/** You must use this Node class as part of a LinkedList to store the UniqueBag items. */
 	class Node {
 		private Item   item;
 		private Node   next;
-		
+
 		Node() {
 			this.item = null;
 			this.next = null;
 		}
-		
+
 		Node(Item item, Node next) {
 			this.item = item;
 			this.next = next;
@@ -55,10 +55,10 @@ public class UniqueBag<Item extends Comparable<Item>> {
 
 	/** Default constructor to create an empty initial bag. */
 	public UniqueBag() {
-		this.first = new Node();
+		this.first = null;
 		this.N = 0;
 	}
-	
+
 	/**
 	 * Initialize the bag to contain the unique elements found in the initial list.
 	 * 
@@ -66,9 +66,10 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 */
 	public UniqueBag(Item[] initial) {
 		//the bag is initially empty
-		
+		for(Item item: initial)
+			this.add(item);
 	}
-	
+
 	/** 
 	 * Return the number of items in the UniqueBag.
 	 * 
@@ -83,19 +84,38 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * 
 	 * Performance must be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
-	public boolean identical (UniqueBag other) {
-		// Replace with your implementation
-		return false;
+	public boolean identical (UniqueBag<Item> other) {
+		if(this.size() == other.size())
+		{
+			Node thisNode = this.first;
+			Node otherNode = other.first;
+			for(int i = 0; i < N; i++) {
+				if(!thisNode.item.equals(otherNode.item))
+					return false;
+				thisNode = thisNode.next;
+				otherNode = otherNode.next;
+			}
+			return true;
+		}else
+			return false;
 	}
-	
+
 	/** 
 	 * Return an array that contains the items from the UniqueBag.
 	 * 
 	 * Performance must be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
 	public Item[] toArray() {
-		// Replace with your implementation
-		return null;
+		Item[] array = (Item[]) new Comparable[N];
+
+		Node node = this.first;
+
+		for	(int i = 0; i < N; i++)
+		{
+			array[i] = node.item;
+			node = node.next;
+		}
+		return array;
 	}
 
 	/** 
@@ -103,24 +123,71 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * 
 	 * Performance can be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
-	public boolean add (Item it){
-		if(this.contains(it))
-			return false;
-		else
-		{
-			Node oldfirst = this.first;
-			this.first = new Node(it, oldfirst);
-			return true;
+	public boolean add (Item it) {
+
+		if(this.size() == 0){
+			this.first = new Node(it, null);
+		}else { //size()>=1
+			Node node = first;
+			Node lastnode = first;
+
+			int i = 0;
+			for(i = 0; i < this.N; i++)
+			{
+				if(node.item.equals(it)){
+					return false; //unique
+				}
+				if(it.compareTo(node.item) > 0) {//it > node.item
+					lastnode = node;
+					node = node.next;
+				}else {//it < node.item
+					if(i == 0){
+						Node newNode = new Node(it,this.first);
+						this.first = newNode;
+					}else{
+						lastnode.next = new Node(it,node);
+					}
+					break;
+				}
+			}
+
+			if(i == this.N) {
+				lastnode.next = new Node(it, null);
+			}
 		}
+
+		this.N++;
+
+		return true;
 	}
-	
+
 	/** 
 	 * Remove an item to the UniqueBag; return false if not contained within, true on success.
 	 * 
 	 * Performance can be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
 	public boolean remove (Item it){
-		// Replace with your implementation
+		Node node = this.first;
+		Node lastnode = this.first;
+		for(int i = 0; i < this.N; i++)
+		{
+
+			if(node.item.equals(it)) {
+				if(i == 0) {
+					Node newFirst = this.first.next;
+					this.first = newFirst;
+				}else
+					lastnode.next = node.next;
+
+				N--;
+				return true;
+			}else if (it.compareTo(node.item) < 0) //it < node.item
+				return false;
+			else {//it > node.item
+				lastnode = node;
+				node = node.next;
+			}
+		}
 		return false;
 	}
 
@@ -130,16 +197,18 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * Performance must be linearly dependent on the number of items in the UniqueBag, or ~ N.
 	 */
 	public boolean contains(Item it) {
-		Node node = first;
-		
+		Node node = this.first;
+
 		for(int i = 0; i < this.N; i++)
 		{
-			if(node.item.equals(it))
+			if(node.item.equals(it)){
 				return true;
-			else
+			}else if (node.item.compareTo(it) > 0){ //it < node.item
+				return false;
+			}else //it < node.item
 				node = node.next;
 		}
-		
+
 		return false;
 	}
 	/** 
@@ -150,9 +219,23 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * is the number of items in this UniqueBag.
 	 */
 	public UniqueBag<Item> intersects(UniqueBag<Item> other) {
-		
-		// Replace with your implementation
-		return null;
+		UniqueBag<Item> newBag= new UniqueBag<Item>();
+
+		int min_size = Math.min(this.size(), other.size());
+
+		Node this_node = this.first;
+		Node other_node = other.first;
+
+		for	(int i = 0; i < min_size; i++) {
+			if(this_node.item.equals(other_node.item))
+				newBag.add(this_node.item);
+			else if(this_node.item.compareTo(other_node.item) < 0) //this_item < other_item
+				this_node = this_node.next;
+			else //this_item > other_item
+				other_node = other_node.next;
+		}
+
+		return newBag;
 	}
 
 	/** 
@@ -163,8 +246,37 @@ public class UniqueBag<Item extends Comparable<Item>> {
 	 * is the number of items in this UniqueBag.
 	 */
 	public UniqueBag<Item> union(UniqueBag<Item> other) {
-		// Replace with your implementation
-		return null;
+		UniqueBag<Item> newBag= new UniqueBag<Item>();
+
+		Node this_node = this.first;
+		Node other_node = other.first;
+
+		while(this_node!=null || other_node != null) {
+
+			if(this_node == null) {
+				newBag.add(other_node.item);
+				other_node = other_node.next;
+			}else if(other_node == null) {
+				newBag.add(this_node.item);
+				this_node= this_node.next;
+			}else if(this_node.item.equals(other_node.item)) {
+				newBag.add(this_node.item);
+				this_node = this_node.next;
+				other_node = other_node.next;
+			}else{ 
+				if(this_node.item.compareTo(other_node.item) < 0) {//this_item < other_item
+					newBag.add(this_node.item);
+					this_node = this_node.next;
+				}else {//this_item > other_item
+					newBag.add(other_node.item);
+					other_node = other_node.next;
+				}
+			}
+		}
+
+
+
+		return newBag;
 	}
 
 

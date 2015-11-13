@@ -1,4 +1,4 @@
-package hw2;
+package mamarantearaujo_hw2;
 
 public class test {
 
@@ -14,9 +14,9 @@ public class test {
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		for(int i = 1; i <= 10; i++)
-			System.out.println(sum(i));
+		String[] strs = new String[]{"ab", "ba"};
+		
+		System.out.println(strs[0].compareTo(strs[1])<0);
 	}
 
 }

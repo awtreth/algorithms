@@ -1,7 +1,8 @@
-package hw2;
+package mamarantearaujo_hw2;
 
 import java.util.Arrays;
 
+import edu.princeton.cs.algs4.StdOut;
 import junit.framework.TestCase;
 
 // Select file and choose Run As ... | JUnit Test Case within eclipse
@@ -18,8 +19,8 @@ public class TestUniqueBag extends TestCase {
 		UniqueBag<String> ub = new UniqueBag<String>();
 		ub.add("boy");
 		ub.add("add");
-		
 		assertTrue (Arrays.equals(new String[] { "add", "boy"}, ub.toArray()));
+		//assertTrue (Arrays.equals(new String[] { "boy", "add"}, ub.toArray()));
 	}
 	
 	public void testOrderedMultiple() {
