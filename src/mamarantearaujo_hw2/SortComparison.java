@@ -33,12 +33,12 @@ public class SortComparison {
 	// [n][s][0] = best time for algorithm #s on a dataset of size n
 	// [n][s][1] = fewest number of exch operations for algorithm #s on a dataset of size n
 	// [n][s][2] = fewest number of less operations for algorithm #s on a dataset of size n
-	static double[][][] results = new double[12][5][3];
+	static double[][][] results = new double[12][6][3];
 
 	// Generates the table with the proper formatting. Use as is.
 	public static void generateReport() {
 		StdOut.println("Time Trials");
-		StdOut.println("N\tInsert\tSelect\tMerge\tQuick\tQuickA\n");
+		StdOut.println("N\tInsert\tSelect\tMerge\tQuick\tQuickA\t3WayMergeSort\n");
 		for (int n = 4, idx = 0; n <= 8192; n*= 2, idx++) {
 			StdOut.println(n + "\t" + results[idx][0][0] + 
 					"\t" + results[idx][1][0] + 
@@ -56,6 +56,7 @@ public class SortComparison {
 					"\t" + (int)results[idx][2][1] + 
 					"\t" + (int)results[idx][3][1] +
 					"\t" + (int)results[idx][4][1]);
+					//"\t" + (int)results[idx][5][1]);
 		}
 
 		StdOut.println();
@@ -67,6 +68,7 @@ public class SortComparison {
 					"\t" + (int)results[idx][2][2] + 
 					"\t" + (int)results[idx][3][2] +
 					"\t" + (int)results[idx][4][2]);
+					//"\t\t" + (int)results[idx][5][2]);
 		}
 	}
 
@@ -101,14 +103,15 @@ public class SortComparison {
 		switch(alg_number)
 		{
 		case 0: alg = new Insertion(); break;
-		case 1: alg = new Selection();
-		case 2: alg = new Merge();
-		case 3: alg = new Quick();
-		case 4: alg = new QuickAlternate();
+		case 1: alg = new Selection(); break;
+		case 2: alg = new Merge(); break;
+		case 3: alg = new Quick(); break;
+		case 4: alg = new QuickAlternate(); break;
+		case 5: alg = new MergeSortThreeWay(); break;
 		}
-		
 		Stopwatch timer = new Stopwatch();
 		alg.sort(vals);
+		//alg.show(vals);
 		double time = timer.elapsedTime();
 		if(!isSorted(vals))
 			StdOut.println("wrongSort");

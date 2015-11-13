@@ -17,12 +17,10 @@ public class Selection extends AbsSortAlgorithm{
             int min = i;
 
             for (int j = i+1; j < N; j++) {
-            	this.n_comparisons++;
                 if (less(a[j], a[min])) {
                 	min = j;
                 }
             }
-            this.n_exchanges++;
             exch(a, i, min);
         }
     }

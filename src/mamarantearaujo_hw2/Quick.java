@@ -44,35 +44,27 @@ public class Quick extends AbsSortAlgorithm{
             // find item on lo to swap
             while (less(a[++i], v))
             {
-            	this.n_comparisons++;
                 if (i == hi) {
-                	this.n_comparisons--;
                 	break;
                 }
             }
-            this.n_comparisons++; //when the while loop is false
             
             // find item on hi to swap
             while (less(v, a[--j]))
             {
-            	this.n_comparisons++;
                 if (j == lo) {
-                	this.n_comparisons--;
                 	break;      // redundant since a[lo] acts as sentinel
                 }
             }
-            this.n_comparisons++; //when the while loop is false
             
             // check if pointers cross
             if (i >= j) break;
             
             exch(a, i, j);
-            this.n_exchanges++;
         }
         	
         // put partitioning item v at a[j]
         exch(a, lo, j);
-        this.n_exchanges++;
         
         // now, a[lo .. j-1] <= a[j] <= a[j+1 .. hi]
         return j;

@@ -18,12 +18,14 @@ abstract class AbsSortAlgorithm implements ISortAlgorithm{
 	
 	// is v < w ?
     protected boolean less(Comparable v, Comparable w) {
-        return v.compareTo(w) < 0;
+        this.n_comparisons++;
+    	return v.compareTo(w) < 0;
     }
 
     // exchange a[i] and a[j]
     protected void exch(Object[] a, int i, int j) {
-        Object swap = a[i];
+    	this.n_exchanges++;
+    	Object swap = a[i];
         a[i] = a[j];
         a[j] = swap;
     }

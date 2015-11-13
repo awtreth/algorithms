@@ -20,11 +20,8 @@ class Insertion extends AbsSortAlgorithm {
 
         for (int i = 0; i < N; i++) {
             for (int j = i; j > 0 && less(a[j], a[j-1]); j--) {
-                this.n_comparisons++;
-            	this.n_exchanges++;
             	exch(a, j, j-1);
             }
-			this.n_comparisons++;//when the test statement of the for loop is false
         }
     }
 }

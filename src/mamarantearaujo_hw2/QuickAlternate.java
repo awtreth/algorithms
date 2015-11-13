@@ -48,16 +48,13 @@ public class QuickAlternate extends AbsSortAlgorithm{
 		// just after them.
 		int store = lo;
 		for (int i = lo; i <= hi; i++) {
-			this.n_comparisons++;
 			if (less(a[i], a[hi])) {
 				exch(a, store, i);
-				this.n_exchanges++;
 				store++;
 			}
 		}
 		
 		exch(a, store, hi);
-		this.n_exchanges++;
 		
 		return store;
 	}

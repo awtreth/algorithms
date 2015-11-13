@@ -40,7 +40,6 @@ public class Merge extends AbsSortAlgorithm{
     		if       (i > mid)               { a[k] = aux[j++]; }
     		else if  (j > hi)                { a[k] = aux[i++]; }
     		else {
-    			this.n_comparisons++;
     			if  (less(aux[j], aux[i]))  { a[k] = aux[j++]; } 
     			else                        { a[k] = aux[i++]; }
     		}
