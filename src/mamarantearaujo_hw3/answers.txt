@@ -1,0 +1,85 @@
+Question 1
+
+(a) POSSIBLE
+    0 1 2 3 4 - - - - - 5 6 7 8 9 - - - - -
+	          4 3 2 1 0           9 8 7 6 5
+
+(b) IMPOSSIBLE
+    0 1 2 3 4 - 5 6 - 7 8 - - - - - 9 - x
+					                    - (we would get 1)
+	          4     6     8 7 5 3 2   9 0 1
+    At the end, we have 0 1 in the stack, so we just can pop 0 after we pop 1
+
+(c) POSSIBLE
+    0 1 2 - 3 4 5 - 6 - 7 - - 8 - 9 - - - -
+          2       5   6   7 4   8   9 3 1 0
+(d) POSSIBLE
+    0 1 2 3 4 - - - - - 5 - 6 - 7 - 8 - 9 - 
+	          4 3 2 1 0   5   6   7   8   9
+
+(e) POSSIBLE
+    0 1 - 2 - 3 - 4 - 5 - 6 - 7 8 9 - - - -
+        1   2   3   4   5   6       9 8 7 0
+
+(f) IMPOSSIBLE
+    0 - 1 2 3 4 - 5 6 - - - 7 8 - x
+      0         4     6 5 3     8 1 7 2 9
+    At the point marked with 'x' we had (1, 2) in the stack
+    The only way to get 1 would be popping, but we get 2 first  
+
+(g) IMPOSSIBLE
+    0 1 - 2 3 4 - 5 6 7 - 8 9 - - - - - x
+        1       4       7     9 8 6 5 3 0 2
+    At the point marked with 'x' we had (0, 2) in the stack
+    The only way to get 0 would be popping it, but we get 2 first  
+
+(h) POSSIBLE
+    0 1 2 - - 3 4 - - 5 6 - - 7 8 - - 9 - -
+          2 1     4 3     6 5     8 7   9 0
+
+
+Question 3
+
+b) In the main loop we inspect the array in the if-else statement.
+	if (mid < a[mid]) ...; //1st array inspection
+	else if (mid > a[mid]) ...; //2nd array inspection
+	else ... // when mid == a[mid]
+	
+So, we inspect 2 times when mid > a[mid] or mid == a[mid]. Then, the worst case would happen when
+the these statements are true at the worst case of the loop (log(N)). It can happens in 2 situations:
+
+When there is a match at the end of the array (ex: {-1, 0, 1, 2, 3, 4, 5, 7} )
+	or
+When there is no match and the last element is smaller than its index (ex: {-1, 0, 1, 2, 3, 4, 5, 6})
+
+Then, nInspections <= 2*log(N)
+
+
+
+Question 4
+
+public static int count(Integer[] a) {
+	int N = a.length;
+	Quick.sort(a);
+	
+	int cnt = 0;
+	
+	for (int i = 0; i < N; i++) {
+		for (int j = i+1; j < N; j++) {
+			int k = rank (a, -(a[i] + a[j]));
+			if (k > j) cnt++;
+		}
+	}
+	return cnt;
+} 
+
+
+block	time			frequency			total time
+D		t0		x (depends on the input)	t0*x
+C		t1				N*(N-1)/2			t1*(N^2/2 - N/2)
+B		t2					N				t2*N
+A		t3					1				t3
+
+grand total  	= (t1/2)*N^2 + (t2-t1/2)*N + t3 + t0*x
+tilde approx 	= ~(t1/2)*N^2 (assuming x is small)
+order of growth = N^2 
