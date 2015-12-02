@@ -59,18 +59,19 @@ Then, nInspections <= 2*log(N)
 Question 4
 
 public static int count(Integer[] a) {
-	int N = a.length;
-	Quick.sort(a);
+	int N = a.length; //Block A
+	Quick.sort(a); //Block A
 	
-	int cnt = 0;
+	int cnt = 0; //Block A
 	
-	for (int i = 0; i < N; i++) {
-		for (int j = i+1; j < N; j++) {
-			int k = rank (a, -(a[i] + a[j]));
-			if (k > j) cnt++;
+	for (int i = 0; i < N; i++) { //Block B (int i = 0 is in Block A)
+		for (int j = i+1; j < N; j++) { //Block C (int int j = i+1 is in Block B)
+			int k = rank (a, -(a[i] + a[j]));//Block C
+			if (k > j)//Block C
+				cnt++; //Block D
 		}
 	}
-	return cnt;
+	return cnt;//Block A
 } 
 
 
