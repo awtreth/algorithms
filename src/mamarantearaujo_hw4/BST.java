@@ -97,7 +97,7 @@ public class BST<Key extends Comparable<Key>> {
 			else return false;
 		}
 			
-		return mirrorImage(one.left, two.right) && mirrorImage(one.left, two.right);
+		return mirrorImage(one.left, two.right) && mirrorImage(one.right, two.left);
 	}
 	
 	public boolean isEmpty() { return root == null; }

@@ -7,10 +7,10 @@ import jdk.nashorn.internal.parser.Scanner;
 public class TestBST {
 
 	public static void main(String[] args) {
-		//checkConstructor();
-		//checkCopy();
-		//checkIdenticalStructure();
-		//checkMirrorImage();
+		checkConstructor();
+		checkCopy();
+		checkIdenticalStructure();
+		checkMirrorImage();
 	}
 	
 	static void checkCopy() {
@@ -20,28 +20,29 @@ public class TestBST {
 		for (double d : data) {
 			bst.insert(d);
 		}
-		
+		StdOut.println("---");
 		bst.preorder();
 		StdOut.println("---");
 		bst.copy().preorder();
+		StdOut.println("---");
 	}
 	
 	static void checkIdenticalStructure() {
-		BST<Integer> bst1 = new BST<Integer>();
-		BST<Integer> bst2 = new BST<Integer>();
+		BST<String> bst1 = new BST<String>();
+		BST<String> bst2 = new BST<String>();
 		
-		bst1.insert(4);bst1.insert(5);bst1.insert(6);bst1.insert(1);bst1.insert(7);
-		bst2.insert(7);bst2.insert(5);bst2.insert(10);bst2.insert(11);bst2.insert(12);
-	
+		bst1.insert("E");bst1.insert("R");bst1.insert("A");bst1.insert("C");
+		bst2.insert("X");bst2.insert("Z");bst2.insert("D");bst2.insert("E");
+		
 		StdOut.println(bst1.identicalStructure(bst2));
 	}
 	
 	static void checkMirrorImage() {
-		BST<Integer> bst1 = new BST<Integer>();
-		BST<Integer> bst2 = new BST<Integer>();
+		BST<String> bst1 = new BST<String>();
+		BST<String> bst2 = new BST<String>();
 		
-		bst1.insert(4);bst1.insert(2);bst1.insert(6);bst1.insert(1);
-		bst2.insert(7);bst2.insert(8);bst2.insert(4);bst2.insert(9);
+		bst1.insert("E");bst1.insert("A");bst1.insert("R");bst1.insert("D");bst1.insert("T");bst1.insert("B");
+		bst2.insert("M");bst2.insert("L");bst2.insert("T");bst2.insert("A");bst2.insert("O");bst2.insert("S");
 	
 		StdOut.println(bst1.mirrorImage(bst2));
 	}

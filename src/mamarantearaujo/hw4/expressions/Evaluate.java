@@ -20,12 +20,15 @@ public class Evaluate {
 			String s= StdIn.readString();
 			if (s.equals ("("))      { /** do nothing. */ }
 			else if (s.equals ("+")) { ops.push(new AdditionNode(s)); }
-			
-			// new operator recognition goes here...
+			else if (s.equals ("-")) { ops.push(new SubtractionNode(s)); }
+			else if (s.equals ("*")) { ops.push(new MultiplicationNode(s)); }
+			else if (s.equals ("/")) { ops.push(new DivisionNode(s)); }
+			else if (s.equals ("^")) { ops.push(new ExponentNode(s)); }
+			else if (s.equals ("sqrt")) { ops.push(new SquareRootNode(s)); }
 			
 			// these are constants to be pushed onto the vals stack.
 			else if (s.equals ("e")) { vals.push(new ENode(s)); }
-			// you can put more here...
+			else if (s.equals ("pi")) { vals.push(new PiNode(s)); }
 			
 			else if (s.equals (")")) {
 				// Grab 0, 1 or 2 parameters based on the operator. 

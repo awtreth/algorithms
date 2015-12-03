@@ -44,7 +44,7 @@ public class CompareBSTandHeap {
 				bst.inspectedElementCount=0;
 
 				
-				while(!bst.isEmpty() && !bst.isEmpty()){
+				while(!bst.isEmpty() && !mpq.isEmpty()){
 					double bst_max = bst.max();
 					bst.deleteMax();					
 					double mpq_max = mpq.delMax();

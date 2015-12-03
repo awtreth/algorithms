@@ -13,7 +13,7 @@ public class EvaluateBonus {
 	public static void main(String[] args) {
 		Stack<OperatorNode> ops = new Stack<OperatorNode>();
 		Stack<ExpressionNode> vals = new Stack<ExpressionNode>();
-				
+
 		while (!StdIn.isEmpty()) {
 			// Read token. push if operator.
 			String s= StdIn.readString();
@@ -21,15 +21,20 @@ public class EvaluateBonus {
 				// this change ensures we will be able to pop values back to beginning of expression
 				// to support arbitrarily long infix expressions.
 				ops.push(new StartExpressionNode(s)); 
-			} else if (s.equals ("+")) { ops.push(new AdditionNode(s)); }
-			
+			} else if (s.equals ("+")) {  ops.push(new AdditionNode(s)); }
+			else if (s.equals ("-")) {    ops.push(new SubtractionNode(s)); }
+			else if (s.equals ("*")) {    ops.push(new MultiplicationNode(s)); }
+			else if (s.equals ("/")) {    ops.push(new DivisionNode(s)); }
+			else if (s.equals ("^")) {    ops.push(new ExponentNode(s)); }
+			else if (s.equals ("sqrt")) { ops.push(new SquareRootNode(s)); }
 
 			// new operator recognition goes here...
-			
+
 			// these are constants to be pushed onto the vals stack.
 			else if (s.equals ("e")) { vals.push(new ENode(s)); }
+			else if (s.equals ("pi")) { vals.push(new PiNode(s)); }
 			// you can put more here...
-			
+
 			else if (s.equals (")")) {
 				// Grab 0, 1 or 2 parameters based on the operator. Will pop
 				// back to the StartExpressionNode just to be sure we have got all
@@ -46,32 +51,30 @@ public class EvaluateBonus {
 						op.left = vals.pop();
 					}
 				}
-				
+
 				// should always get the StartExpressionNode here. If not, must keep going, 
 				// simply replacing the right child with an expanded version. No concept
 				// of operator precedence, thus can accept "2 + 3 * 7 + 5 / 6" which would 
 				// be treated as 2 + (3 * (7 + (5 / 6) )). Hey, this is a Bonus question.
 				// see if you can take it from here....
 				OperatorNode check = ops.pop();
-				while (check.isOperator()) {  // If operator IS an operator, then have unexpectedly
-											  // run into more of the expression.
-	
-					
-											  // could actually insert operator precedence no PEMDAS
-					/* FILL IN */			  // though would be tricky! Idea would be to have 
-					/* HERE */				  // OperatorNode have new method int priority() which 
-											  // would default to 1. Then each would override and 
-											  // increase priority. Note the "P" in PEMDAS stands
-											  // for parenthesis so those would not exist. Lowest
-											  // priority would win. Nice expansion.
-					
-					
+				while (check.isOperator()) {
+
+					check.left = op;
+
+					if (check.numParameters() == 2) {  
+						// oops. This is a binary operator. Order values properly
+						// and get the second one
+						check.right = check.left;
+						check.left = vals.pop();
+					}
+
+					op = check;
 					check = ops.pop();        // keep on going.
 				}
-				
-				
+
 				// Once operator node is fully processed, it goes onto the vals stack.
-				// TODO: Do That Here...
+				vals.push(op);
 			} else {
 				// Token no operator or parenthesis; must be double value to push
 				double d = Double.parseDouble(s);
