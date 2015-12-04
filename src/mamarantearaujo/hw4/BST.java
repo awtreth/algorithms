@@ -1,4 +1,4 @@
-package mamarantearaujo_hw4;
+package mamarantearaujo.hw4;
 
 import edu.princeton.cs.algs4.StdOut;
 
