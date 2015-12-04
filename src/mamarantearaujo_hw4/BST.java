@@ -53,7 +53,8 @@ public class BST<Key extends Comparable<Key>> {
 		if(n == null)
 			return -1;
 		else
-			return 1 + Math.max(height(n.left), height(n.right));
+			return 1 + Math.max(height(n.left), height(n.right)); //generic version
+			//return 1 + height(n.left);//just for the specified BSTs
 	}
 	
 	
