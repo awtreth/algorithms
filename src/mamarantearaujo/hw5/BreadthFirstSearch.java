@@ -5,7 +5,7 @@ public class BreadthFirstSearch {
 	//int count;			// how many connected
 	int[] edgeTo;
 	int[] distTo;
-	int status = 0;
+	int distToSum = 0;
 	Queue<Integer> q = new Queue<Integer>();
 	Graph g;			// graph being searched
 	
@@ -29,18 +29,18 @@ public class BreadthFirstSearch {
 	//public int count() { return count; }    			 // number of vertices connected to s
 	public boolean marked(int v) { return marked[v]; }
 	public int distTo(int v) {return distTo[v];}
-	public int status() {return status;}
+	public int distToSum() {return distToSum;}
 	
 	/** Continue BFS search over graph by visiting vertex v. */  
 	private void bfs (int s) {
-
+		int v = 0;
 		while(!q.isEmpty()) {
-			int v = q.dequeue();
+			v = q.dequeue();
 			for(int w : g.adj(v)) {
 				if(!marked[w]) {
 					edgeTo[w] = v;
 					distTo[w] = distTo[v]+1;
-					status+=distTo[w];
+					distToSum+=distTo[w];
 					marked[w] = true;
 					q.enqueue(w);
 				}

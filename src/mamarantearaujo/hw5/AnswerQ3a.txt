@@ -1,0 +1,17 @@
+
+Method:
+Perform DepthFirstSearch or BreadthFirstSearch (any complete graph search that keep track of visited vertices)
+until it visits a vertex (the 1st time you see it) whose all connected vertices were already marked as visited.
+This vertex is safe, so its removal will not disconnect the graph.
+
+Proofs:
+1)	The method is valid
+
+	When we visit a node for the first time, all his neighbors that were already marked were reached before through another way.
+	It means that we didn't need to get to the current vertex before reach its neighbors, so its removal is safe.
+
+
+2)	We always find a safe vertex with this method for any connected graph with more than 2 vertex
+	
+	At least the last visited vertex (for the 1st time) is a safe vertex, 
+	because all the other nodes will be already marked (otherwise this is not the last vertex).

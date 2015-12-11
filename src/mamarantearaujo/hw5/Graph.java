@@ -63,25 +63,35 @@ public class Graph {
 		return adj[v].size();
 	}
 
-	/** Implement as part of HW5, Question 1. */
-	public Graph complement() { 
+	/** Implement as part of HW5, Question 1. 
+	 * g' is the complement of g if:
+	 * - they have the same number of vertices
+	 * - an edge exists in g' if it doesn't exist in g
+	 * - an edge doesn't exist in g' if it exists in g
+	 * */
+	public Graph complement() {
+		//Completely connected graph of V vertices
 		Graph fullGraph = Graph.completeGraph(this.V);
 
-		for (int number1 = 0; number1 < V; number1++) {
-			for (Integer number2 : adj[number1]) {
-				if(number2>number1)
-					fullGraph.removeEdge(number1,number2);
+		for (int v1 = 0; v1 < V; v1++) {
+			//for each vertice v2 conected to v1
+			for (Integer v2 : adj[v1]) {
+				//I've already looked for v2 that are smaller than v1 when I checked the v1's edges
+				if(v2>v1)
+					fullGraph.removeEdge(v1,v2);
 			}
 		}
 
-		return fullGraph;
+		return fullGraph;//not full anymore
 	}
 
+	//Helper function (as private, because it's just used in complement() method
 	private void removeEdge(int v, int w) {
 		int initialSize = adj[v].size();
-		this.adj[v].remove(w);
+		this.adj[v].remove(w);//void method, does nothing when it was not already in the bag
 		this.adj[w].remove(v);
-		if(adj[v].size()!=initialSize)
+
+		if(adj[v].size()!=initialSize) //to check if it was actually removed
 			this.E--;
 		//TODO: exception
 	}
@@ -103,59 +113,89 @@ public class Graph {
 	/** Implement as part of HW5, Question 1. */
 	//it assumes that it is always a simple valid graph
 	public boolean connected() { 
-		
+		//compute a complete DepthFirstSearch from vertice 0
 		DepthFirstSearch dfs = new DepthFirstSearch(this, 0);
-		
-		if(dfs.count()<V) return false;
-		return true;
+		//It is connected if it could reach all the nodes
+
+		//count() return the number of marked (visited) vertices 
+		if(dfs.count()<V) return false; //Didn't mark all the vertices
+		return true;//All the vertices were visited
 	}	
 
-	/** Implement as part of HW5, Question 2. */
+	/** Implement as part of HW5, Question 2. 
+	 * 
+	 * Returns the sum of the shortest distances to all other nodes
+	 * valid only for undirected connected graphs
+	 * */
 	public int status(int v) { 
-		BreadthFirstSearch bfs = new BreadthFirstSearch (this,v);
-		return bfs.status();
+		if(this.connected()) {
+			//bfs record the shortest distance to each node
+			BreadthFirstSearch bfs = new BreadthFirstSearch (this,v);
+			return bfs.distToSum();
+		}
+		return -1;
 	}
-	
-	/** Implement as part of HW5, Question 2. */
+
+	/** Implement as part of HW5, Question 2. 
+	 * 
+	 * It's true when status of all vertices are different from each other
+	 * 
+	 * */
 	public boolean statusInjective() {
 		LinkedList<Integer> computedStatus = new LinkedList<Integer>();
-		
+
 		for(int i = 0; i < V; i++) {
 			int status = this.status(i);
-			if(computedStatus.contains(status))
+			if(computedStatus.contains(status)) //identify repeated status
 				return false;
 			computedStatus.add(status);
 		}
-		
+
 		return true;
 	}
 
-	/** Implement as part of HW5, Question 3. */
+	/** Implement as part of HW5, Question 3. 
+	 * 
+	 * Perform BreadthFirstSearch until it visits a vertex (the 1st time you see it) whose all connected
+	 * vertices were already marked as visited. This vertex is safe, so its removal will not disconnect the graph.
+	 * 
+	 * */
 	public int findSafeVertex() { 
-		int minEdges = Integer.MAX_VALUE;
-		int minV = 0;
-		int count = 0;
 		
-		for	(Bag bag : adj) {
-			int nEdges = bag.size();
-			if(nEdges < minEdges) {
-				minEdges = nEdges;
-				minV = count;
+		if(!this.connected()) return -1;
+		
+		boolean[] marked = new boolean[this.V()];//mark visited points
+		Queue<Integer> q = new Queue<Integer>();
+		marked[0] = true;
+		q.enqueue(0);
+
+		while(!q.isEmpty()) {
+			int v = q.dequeue();
+			int qsize_before = q.size();
+			for(int w : this.adj(v)) {
+				if(!marked[w]) {
+					marked[w] = true;
+					q.enqueue(w);//we increase the size of the queue for each new unmarked neighboor
+				}
 			}
-			count++;
+			if(q.size() == qsize_before)//all adjacent vertices were already marked
+				return v;
 		}
 		
-		return minV;
+		return -1;//it can't reach this point
 	}
 
-	/** Implement as part of HW5, Question 3. */
+	/** Implement as part of HW5, Question 3.
+	 * 
+	 *  maximum eccentric of any of its vertices
+	 * */
 	public int diameter() {
 		if(!this.connected())
 			return -1;
 		//else
 
 		int maxEccentricity = 0;
-		
+
 		for(int i = 0; i < V; i++) {
 			int ec = eccentricity(i);
 			if(ec > maxEccentricity)
@@ -163,17 +203,19 @@ public class Graph {
 		}
 		return maxEccentricity;
 	}
-	
+
+	//length  of  the  shortest  path  from  that  vertex  to  the furthest  vertex x from v in  the  graph
 	private int eccentricity(int v) {
-		
+
 		BreadthFirstSearch bfs = new BreadthFirstSearch (this,v);
+		//return bfs.maxDist();
 		int maxDist = 0;
-		
+
 		for(int i = 0; i < V; i++) {
 			if(bfs.distTo(i) > maxDist)
 				maxDist = bfs.distTo(i);
 		}
-		
+
 		return maxDist;
 	}
 

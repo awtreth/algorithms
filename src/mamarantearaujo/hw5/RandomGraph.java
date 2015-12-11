@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdRandom;
 public class RandomGraph {
 	
 	// play around with some values. Controls density of graph (.13 is good value).
-	static double scale = 0.13;   
+	static double scale = 0.4;   
 	
 	/** Construct random graph with the default scale value. */
 	static Graph random (int N) {

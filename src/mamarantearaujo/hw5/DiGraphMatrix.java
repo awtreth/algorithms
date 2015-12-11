@@ -12,9 +12,11 @@ public class DiGraphMatrix {
 		this.V = V;
 		this.E = 0;
 		weights = new double[V][V];
-		initMatrix();
+		initMatrix();//set the weights
 	}
 	
+	//set the weights
+	//0 for the diagonals, -1 otherwise
 	private void initMatrix() {
 		for	(int i = 0; i < V; i++) {
 			for (int j = 0; j < V; j++)
@@ -23,6 +25,7 @@ public class DiGraphMatrix {
 		}
 	}
 	
+	//add an edge form source to target (directed)
 	public void addEdge (int source, int target, double weight) {
 		E++;
 		weights[source][target] = weight;
@@ -32,12 +35,13 @@ public class DiGraphMatrix {
 	/** Returns information about given directed edge, or null if doesn't exist. */
 	public DirectedEdge getEdge (int source, int target) {
 		double weight = weights[source][target];
-		if(weight < 0)
+		if(weight < 0)//invalid
 			return null;
 		else
 			return new DirectedEdge(source, target, weight);
 	}
 	
+	//returns a queue of the vertices that are adjacent to v
 	public Iterable<DirectedEdge> adj(int v) {
 		// Hint: You could create a Queue of DirectedEdges, populating it from the
 		// specific row of the matrix 'weights' and then return that. 
@@ -45,8 +49,8 @@ public class DiGraphMatrix {
 		Queue<DirectedEdge> edges = new Queue<DirectedEdge>();
 		
 		for(int i = 0; i < V; i++) {
-			DirectedEdge edge = this.getEdge(v, i);
-			if(edge!=null && v != i)
+			DirectedEdge edge = this.getEdge(v, i);//v to i
+			if(edge!=null && v != i)//doesn't count to itself
 				edges.enqueue(edge);
 		}
 		

@@ -5,18 +5,21 @@ import edu.princeton.cs.algs4.StdOut;
 // modify this for your solution.
 
 public class DijkstrasAlgorithm {
-	// TODO: The result of your computation is stored in these arrays.
 	static double dist[];
 	static int pred[];     // this is equivalent to edgeTo as discussed for DFS/BFS
 	static boolean visited[];     // this is equivalent to edgeTo as discussed for DFS/BFS
 
 	// conduct from this designated source vertex.
 	public static void singleSourceShortestPath(DiGraphMatrix graph, int s) {
-		setup(graph.V, s);
+		setup(graph.V, s);//initialize dist, pred and visited arrays
 
 		while(true) {
 			int u = getU();
 
+			//I needed to add the second condition to work
+			//For me, the first one is just valid for not connected graphs
+			//getU() returns a visited u (in this case: 0) when all were already visited
+			//read visited[u] as visitedAllVertices (all values of visited[] are true at this point)
 			if(dist[u] == Double.MAX_VALUE || visited[u]) return;
 
 			visited[u] = true;
@@ -35,12 +38,15 @@ public class DijkstrasAlgorithm {
 		}
 	}
 
+	//print the distances
 	public static void printDist() {
 		for(double value : dist) {
 			StdOut.println(value);
 		}
 	}
 
+	//initialize the dist array with MAX_VALUE for all the vertices
+	//except for the start vertex s
 	private static void initDist(int V, int s) {
 		dist = new double[V];
 		for(int i = 0; i < V; i++) {
@@ -49,6 +55,7 @@ public class DijkstrasAlgorithm {
 		dist[s] = 0;
 	}
 
+	//initialize the pred array with -1
 	private static void initPred(int V) {
 		pred = new int[V];
 		for(int i = 0; i < V; i++) {
@@ -56,12 +63,14 @@ public class DijkstrasAlgorithm {
 		}
 	}
 
+	//initialize dist, pred and visited arrays
 	private static void setup(int V, int s) {
 		initDist(V,s);
 		initPred(V);
 		visited = new boolean[V];//start with false
 	}
 
+	//returns the vertex whose dist is smallest of unvisited vertices
 	private static int getU() {
 		double minDist = Double.MAX_VALUE;
 		int minIdx=0;
@@ -93,7 +102,7 @@ public class DijkstrasAlgorithm {
 
 		StdOut.println(graph.toString());
 
-		singleSourceShortestPath(graph, 0);
+		singleSourceShortestPath(graph, 3);
 
 		printDist();
 
