@@ -6,18 +6,13 @@ public class GraphTest {
 
 	public static void main(String[] args) {
 
-		//complementQ1bTest();
-		//connectedQ1dTest();
+		complementQ1bTest();
+		connectedQ1dTest();
+		bonusTest();
 //		statusExample();
 //		findSafeVertexExample();
 //		diameterExample();
 	
-		Graph graph = findOneInjective(22);
-		
-		if(graph!=null)
-			StdOut.println(graph.toString());
-		else
-			StdOut.printf("not possible to test with %d\n", 7);
 	}
 
 	public static void printDashes() {
