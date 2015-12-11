@@ -112,7 +112,10 @@ public class Graph {
 
 	/** Implement as part of HW5, Question 1. */
 	//it assumes that it is always a simple valid graph
-	public boolean connected() { 
+	public boolean connected() {
+		if(this.V() <= 1)
+			return true; //definition
+		
 		//compute a complete DepthFirstSearch from vertice 0
 		DepthFirstSearch dfs = new DepthFirstSearch(this, 0);
 		//It is connected if it could reach all the nodes

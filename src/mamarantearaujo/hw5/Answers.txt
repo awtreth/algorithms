@@ -1,3 +1,13 @@
+Q2-c) It's not possible
+
+the function:  public static Graph findOneInjective(int V),  in GraphTest.java, check all possible graphs with V vertices
+
+it can find for V >= 7
+
+The function bonusTest() test for 3 <= V <= 8
+
+
+Q3-a)
 
 Method:
 Perform DepthFirstSearch or BreadthFirstSearch (any complete graph search that keep track of visited vertices)
